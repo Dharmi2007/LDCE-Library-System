@@ -3,103 +3,231 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Library Admin Panel</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <title>Admin Dashboard - Library Portal</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
+  <style>
+    /* ---- Base Styling ---- */
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      display: flex;
+      background-color: #f7f9fc;
+      color: #222;
+    }
+
+    h1, h2, h3 {
+      margin-bottom: 10px;
+      color: #2c3e50;
+    }
+
+    a {
+      text-decoration: none;
+      color: #2c3e50;
+    }
+
+    /* ---- Sidebar ---- */
+    nav {
+      width: 220px;
+      background-color: #2c3e50;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 20px 10px;
+      height: 100vh;
+      position: fixed;
+    }
+
+    nav h1 {
+      color: white;
+      font-size: 20px;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    nav a {
+      display: block;
+      width: 100%;
+      padding: 10px 15px;
+      margin: 5px 0;
+      border-radius: 8px;
+      color: white;
+      transition: 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #34495e;
+    }
+
+    /* ---- Main Content ---- */
+    main {
+      margin-left: 240px;
+      padding: 30px;
+      width: calc(100% - 240px);
+    }
+
+    section {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      padding: 20px 25px;
+      margin-bottom: 30px;
+    }
+
+    form {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-top: 15px;
+    }
+
+    input, textarea, button {
+      font-size: 15px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      outline: none;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #3498db;
+      box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+    }
+
+    button {
+      background-color: #3498db;
+      color: white;
+      cursor: pointer;
+      border: none;
+      padding: 10px 18px;
+      transition: 0.3s;
+      border-radius: 8px;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 10px 15px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #3498db;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f6fa;
+    }
+
+    ul {
+      list-style-type: none;
+      padding-left: 0;
+    }
+
+    ul li {
+      background-color: #f9fafb;
+      border-left: 4px solid #3498db;
+      margin-bottom: 10px;
+      padding: 10px 15px;
+      border-radius: 6px;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        position: static;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-around;
+      }
+
+      main {
+        margin-left: 0;
+        width: 100%;
+      }
+    }
+  </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body>
+  <!-- Sidebar Navigation -->
+  <nav>
+    <h1>📚 Library Admin</h1>
+    <a href="{{ url_for('student_dashboard') }}">🏠 Student View</a>
+    <a href="#books">📖 Books</a>
+    <a href="#timings">🕓 Timings</a>
+    <a href="#faqs">❓ FAQs</a>
+  </nav>
 
-  <!-- Header -->
-  <header class="bg-blue-800 text-white py-5 shadow-md text-center">
-    <h1 class="text-3xl font-bold">Library Admin Panel</h1>
-    <p class="text-sm text-gray-200">Manage and update the library book records</p>
-  </header>
+  <!-- Main Content -->
+  <main>
+    <!-- BOOKS TAB -->
+    <section id="books">
+      <h2>📖 Add New Book</h2>
+      <form method="POST" action="{{ url_for('admin_add_book') }}">
+        <input type="text" name="title" placeholder="Book Title" required />
+        <input type="text" name="author" placeholder="Author Name" required />
+        <input type="text" name="isbn" placeholder="ISBN" required />
+        <input type="date" name="arrival_date" required />
+        <button type="submit">Add Book</button>
+      </form>
 
-  <!-- Main Container -->
-  <div class="max-w-5xl mx-auto mt-10 bg-white shadow-lg rounded-xl p-8">
-
-    <!-- Add Book Form -->
-    <h2 class="text-2xl font-semibold text-blue-800 mb-4">Add New Book</h2>
-
-    <form method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-      <div>
-        <label class="block font-medium text-gray-700 mb-1">Book Title</label>
-        <input type="text" name="title" placeholder="Enter book title" class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-300" />
-      </div>
-
-      <div>
-        <label class="block font-medium text-gray-700 mb-1">Author Name</label>
-        <input type="text" name="author" placeholder="Enter author name" class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-300" />
-      </div>
-
-      <div>
-        <label class="block font-medium text-gray-700 mb-1">ISBN Number</label>
-        <input type="text" name="isbn" placeholder="Enter ISBN number" class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-300" />
-      </div>
-
-      <div>
-        <label class="block font-medium text-gray-700 mb-1">Arrival Date</label>
-        <input type="date" name="arrival_date" class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-blue-300" />
-      </div>
-
-      <div class="md:col-span-2 text-center mt-4">
-        <button type="submit" class="bg-blue-700 hover:bg-blue-800 text-white px-6 py-2 rounded-lg shadow-md">Add Book</button>
-      </div>
-    </form>
-
-    <!-- Admin Message -->
-    {% if admin_message %}
-    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-6 text-center">
-      {{ admin_message }}
-    </div>
-    {% endif %}
-
-    <!-- Book List -->
-    <h3 class="text-xl font-semibold text-gray-800 mb-4">Current Book List</h3>
-
-    <!-- Example Data Table -->
-    <table class="min-w-full border-collapse border border-gray-300 rounded-lg">
-      <thead class="bg-gray-200">
+      <h3>📚 Current New Arrivals</h3>
+      <table>
         <tr>
-          <th class="border border-gray-300 px-4 py-2 text-left">#</th>
-          <th class="border border-gray-300 px-4 py-2 text-left">Book Title</th>
-          <th class="border border-gray-300 px-4 py-2 text-left">Author</th>
-          <th class="border border-gray-300 px-4 py-2 text-left">ISBN</th>
-          <th class="border border-gray-300 px-4 py-2 text-left">Arrival Date</th>
+          <th>Title</th><th>Author</th><th>ISBN</th><th>Arrival Date</th>
         </tr>
-      </thead>
-      <tbody>
-        <!-- Example Book Entries -->
-        <tr class="hover:bg-gray-50">
-          <td class="border border-gray-300 px-4 py-2">1</td>
-          <td class="border border-gray-300 px-4 py-2">Python for Beginners</td>
-          <td class="border border-gray-300 px-4 py-2">John Mathews</td>
-          <td class="border border-gray-300 px-4 py-2">9781234567890</td>
-          <td class="border border-gray-300 px-4 py-2">2025-10-20</td>
+        {% for book in books %}
+        <tr>
+          <td>{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>{{ book.isbn }}</td>
+          <td>{{ book.arrival_date }}</td>
         </tr>
+        {% endfor %}
+      </table>
+    </section>
 
-        <tr class="hover:bg-gray-50">
-          <td class="border border-gray-300 px-4 py-2">2</td>
-          <td class="border border-gray-300 px-4 py-2">Artificial Intelligence: A Modern Approach</td>
-          <td class="border border-gray-300 px-4 py-2">Stuart Russell</td>
-          <td class="border border-gray-300 px-4 py-2">9780134610993</td>
-          <td class="border border-gray-300 px-4 py-2">2025-10-30</td>
-        </tr>
+    <!-- TIMINGS TAB -->
+    <section id="timings">
+      <h2>🕓 Update Library Timings & Announcement</h2>
+      <form method="POST" action="{{ url_for('admin_update_config') }}">
+        <label>Regular Timing:</label>
+        <input type="text" name="regular_timing" value="{{ config.get('regular_timing', '') }}" required />
 
-        <tr class="hover:bg-gray-50">
-          <td class="border border-gray-300 px-4 py-2">3</td>
-          <td class="border border-gray-300 px-4 py-2">Data Science with Python</td>
-          <td class="border border-gray-300 px-4 py-2">Jake VanderPlas</td>
-          <td class="border border-gray-300 px-4 py-2">9781491912058</td>
-          <td class="border border-gray-300 px-4 py-2">2025-11-02</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+        <label>Saturday Timing:</label>
+        <input type="text" name="special_timing" value="{{ config.get('special_timing', '') }}" required />
 
-  <!-- Footer -->
-  <footer class="text-center mt-10 text-gray-500 text-sm pb-4">
-    © 2025 LDCE Central Library | Admin Dashboard
-  </footer>
+        <label>Announcement Message:</label>
+        <textarea name="announcement" rows="3">{{ config.get('announcement', '') }}</textarea>
 
+        <button type="submit">Update Config</button>
+      </form>
+    </section>
+
+    <!-- FAQ TAB -->
+    <section id="faqs">
+      <h2>❓ FAQs (View Only)</h2>
+      <ul>
+        {% for faq in faqs %}
+        <li><strong>{{ faq.question }}</strong><br>{{ faq.answer }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+  </main>
 </body>
 </html>
