@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LDCE Central Library - Hackathon</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa; /* Light gray background */
+        }
+        .container {
+            max-width: 1200px;
+        }
+        .nav-link:hover {
+            color: #ff9900;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- Header & Navigation -->
+    <header class="bg-gray-900 shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <!-- Logo and Title -->
+            <div class="flex items-center space-x-3">
+                <i class="fas fa-book-reader text-3xl text-yellow-500"></i>
+                <h1 class="text-2xl font-bold text-white">LDCE Central Library</h1>
+            </div>
+            
+            <!-- Navigation Links -->
+            <nav class="hidden md:flex space-x-6">
+                <a href="#home" class="nav-link text-white hover:text-yellow-500 transition duration-300">Home</a>
+                <a href="#new-arrivals" class="nav-link text-white hover:text-yellow-500 transition duration-300">New Arrivals</a>
+                <a href="#faqs" class="nav-link text-white hover:text-yellow-500 transition duration-300">FAQs</a>
+                <a href="#reserve" class="nav-link bg-yellow-600 hover:bg-yellow-700 text-gray-900 font-semibold py-1.5 px-4 rounded-full transition duration-300 shadow-lg">Reserve Book</a>
+                <a href="{{ url_for('admin') }}" class="nav-link text-white hover:text-yellow-500 transition duration-300">Staff Login</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="menu-button" class="md:hidden text-white focus:outline-none">
+                <i class="fas fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-800 pb-2">
+            <a href="#home" class="block py-2 px-4 text-white hover:bg-gray-700">Home</a>
+            <a href="#new-arrivals" class="block py-2 px-4 text-white hover:bg-gray-700">New Arrivals</a>
+            <a href="#faqs" class="block py-2 px-4 text-white hover:bg-gray-700">FAQs</a>
+            <a href="#reserve" class="block py-2 px-4 text-yellow-500 hover:bg-gray-700">Reserve Book</a>
+            <a href="{{ url_for('admin') }}" class="block py-2 px-4 text-white hover:bg-gray-700">Staff Login</a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow">
+        <div class="container mx-auto px-4 py-8">
+
+            <!-- Hero Section / Welcome -->
+            <section id="home" class="text-center bg-white p-8 rounded-xl shadow-2xl mb-12">
+                <h2 class="text-4xl font-extrabold text-gray-800 mb-4">Welcome to Your Central Hub of Knowledge</h2>
+                <p class="text-lg text-gray-600 mb-6 max-w-3xl mx-auto">
+                    LDCE Central Library provides access to millions of resources, from cutting-edge research to classic literature. Explore, study, and innovate with us!
+                </p>
+                <div class="flex justify-center space-x-4">
+                    <a href="#new-arrivals" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300 shadow-md">See New Books</a>
+                    <a href="#faqs" class="bg-gray-200 hover:bg-gray-300 text-gray-800 font-bold py-2 px-6 rounded-lg transition duration-300 shadow-md">View FAQs</a>
+                </div>
+            </section>
+
+            <!-- Reservation Form Section -->
+            <section id="reserve" class="bg-blue-50 p-6 rounded-xl shadow-lg mb-12 border-l-4 border-blue-600">
+                <h2 class="text-3xl font-bold text-blue-800 mb-6 border-b pb-2">Reserve a Book</h2>
+                <form action="{{ url_for('index') }}" method="POST" class="space-y-4">
+                    <div>
+                        <label for="title" class="block text-gray-700 font-medium">Book Title:</label>
+                        <input type="text" id="title" name="title" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="student_name" class="block text-gray-700 font-medium">Your Name:</label>
+                            <input type="text" id="student_name" name="student_name" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="student_id" class="block text-gray-700 font-medium">Student/Staff ID:</label>
+                            <input type="text" id="student_id" name="student_id" required class="mt-1 block w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+                    <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded-lg transition duration-300 shadow-lg transform hover:scale-105">Submit Reservation Request</button>
+                </form>
+            </section>
+
+            <!-- New Arrivals Section -->
+            <section id="new-arrivals" class="bg-white p-8 rounded-xl shadow-2xl mb-12">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">New Arrivals</h2>
+                
+                {% if new_arrivals %}
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {% for book in new_arrivals %}
+                    <div class="p-4 border border-gray-200 rounded-lg shadow-md hover:shadow-xl transition duration-300 bg-gray-50">
+                        <p class="text-xl font-semibold text-gray-900 mb-1">{{ book['title'] }}</p>
+                        <p class="text-sm text-blue-600 italic">By: {{ book['author'] }}</p>
+                        <p class="text-xs text-gray-500 mt-2">ISBN: {{ book['isbn'] }}</p>
+                        <p class="text-xs text-gray-500">Arrived: {{ book['arrival_date'] }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% else %}
+                <p class="text-gray-500">No new arrivals listed yet. Check back soon!</p>
+                {% endif %}
+            </section>
+
+            <!-- FAQ and Info Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- FAQs Section -->
+                <section id="faqs" class="lg:col-span-2 bg-white p-8 rounded-xl shadow-2xl">
+                    <h2 class="text-3xl font-bold text-gray-800 mb-6 border-b pb-2">Frequently Asked Questions (FAQs)</h2>
+                    <div class="space-y-4">
+                        {% for faq in faqs %}
+                        <details class="group border border-gray-200 rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition duration-300">
+                            <summary class="flex justify-between items-center font-semibold text-lg text-gray-700 group-open:text-blue-600">
+                                {{ faq['question'] }}
+                                <i class="fas fa-chevron-down transform group-open:rotate-180 transition duration-300"></i>
+                            </summary>
+                            <p class="mt-3 text-gray-600 border-t pt-3">{{ faq['answer'] }}</p>
+                        </details>
+                        {% endfor %}
+                    </div>
+                </section>
+
+                <!-- Library Info and Links -->
+                <aside class="space-y-8">
+                    <!-- Timings -->
+                    <div class="bg-yellow-50 p-6 rounded-xl shadow-lg border-l-4 border-yellow-600">
+                        <h3 class="text-xl font-bold text-yellow-800 mb-4 flex items-center"><i class="far fa-clock mr-2"></i> Library Timings</h3>
+                        <ul class="space-y-2 text-gray-700">
+                            {% for day, time in timings.items() %}
+                            <li class="flex justify-between border-b border-yellow-200 pb-1">
+                                <span class="font-medium">{{ day }}:</span>
+                                <span>{{ time }}</span>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+
+                    <!-- External Links -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg border-l-4 border-gray-600">
+                        <h3 class="text-xl font-bold text-gray-800 mb-4 flex items-center"><i class="fas fa-link mr-2"></i> Quick Links</h3>
+                        <ul class="space-y-3">
+                            {% for name, link in external_links.items() %}
+                            <li>
+                                <a href="{{ link }}" class="text-blue-600 hover:text-blue-800 transition duration-300 font-medium flex items-center">
+                                    <i class="fas fa-external-link-alt text-sm mr-2"></i> {{ name }}
+                                </a>
+                            </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </aside>
+            </div>
+            
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="footer mt-auto py-3 bg-gray-900 text-white shadow-inner">
+        <div class="container mx-auto px-4 text-center">
+            <!-- यह लाइन ठीक हो गई है -->
+            <p class="mb-0 text-sm">&copy; {{ current_year }} LDCE Central Library. Developed for Hackathon Track-1.</p>
+            <p class="text-xs mt-1 text-gray-400">Powered by Flask & SQLite</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript for Mobile Menu -->
+    <script>
+        document.getElementById('menu-button').addEventListener('click', function() {
+            var mobileMenu = document.getElementById('mobile-menu');
+            mobileMenu.classList.toggle('hidden');
+        });
+    </script>
+</body>
+</html>
