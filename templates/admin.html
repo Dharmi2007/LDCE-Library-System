@@ -219,6 +219,31 @@
       </form>
     </section>
 
+    <!-- RESERVATIONS TAB -->
+    <section id="reservations">
+     <h2>📩 Student Book Reservations</h2>
+     {% if reservations %}
+      <table>
+      <tr>
+       <th>Book Title</th>
+       <th>Student Name</th>
+       <th>Student ID</th>
+       <th>Reservation Date</th>
+      </tr>
+      {% for r in reservations %}
+      <tr>
+      <td>{{ r.title }}</td>
+      <td>{{ r.student_name }}</td>
+      <td>{{ r.student_id }}</td>
+      <td>{{ r.reservation_date }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <p>No current reservations found.</p>
+  {% endif %}
+</section>
+
     <!-- FAQ TAB -->
     <section id="faqs">
       <h2>❓ FAQs (View Only)</h2>
