@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Journals - LDCE Central Library</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+  <!-- Header & Navbar -->
+  <header class="bg-gray-800 text-white sticky top-0 z-50 shadow-lg">
+    <div class="container mx-auto flex justify-between items-center px-6 py-4">
+      <div class="flex items-center space-x-3">
+        <img src="{{ url_for('static', filename='images/ldce_logo.png') }}" alt="LDCE Logo" class="h-11 w-auto rounded-md">
+        <i class="fas fa-book-reader text-3xl text-yellow-400"></i>
+        <h1 class="text-2xl font-bold">LDCE Central Library</h1>
+      </div>
+      <nav class="space-x-6 text-lg">
+        <a href="/" class="hover:text-yellow-400 transition">Home</a>
+        <a href="/books" class="hover:text-yellow-400 transition">Books</a>
+        <a href="/account" class="hover:text-yellow-400 transition">Account</a>
+        <a href="/guidelines" class="hover:text-yellow-400 transition">Guidelines</a>
+        <a href="/ejournals" class="hover:text-yellow-400 transition">E-Journals</a>
+        <a href="/faqs" class="hover:text-yellow-400 transition">FAQs</a>
+        <a href="{{ url_for('admin_dashboard') }}" class="hover:text-yellow-400 transition">Staff Login</a>
+        <a href="/logout" class="hover:text-yellow-400 transition">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page Content -->
+  <div class="max-w-5xl mx-auto bg-white p-8 mt-10 rounded-lg shadow-md">
+    <h1 class="text-3xl font-bold text-blue-900 mb-6">📘 E-Journals & Digital Resources</h1>
+
+    <h2 class="text-2xl font-semibold text-gray-900 mb-4">🌐 Popular Online E-Journal Platforms</h2>
+    <ul class="list-disc ml-6 text-lg space-y-2">
+      <li><a href="https://ieeexplore.ieee.org/Xplore/home.jsp" target="_blank" class="text-blue-700 hover:underline">IEEE Open Access Journals</a></li>
+      <li><a href="https://www.sciencedirect.com" target="_blank" class="text-blue-700 hover:underline">ScienceDirect Open Access</a></li>
+      <li><a href="https://www.springeropen.com" target="_blank" class="text-blue-700 hover:underline">SpringerOpen Journals</a></li>
+      <li><a href="https://doaj.org" target="_blank" class="text-blue-700 hover:underline">DOAJ – Directory of Open Access Journals</a></li>
+      <li><a href="https://nptel.ac.in" target="_blank" class="text-blue-700 hover:underline">NPTEL – Expert Lectures & Courses</a></li>
+      <li><a href="https://swayam.gov.in" target="_blank" class="text-blue-700 hover:underline">SWAYAM – Government Online Courses</a></li>
+    </ul>
+
+    <hr class="my-10">
+
+    <h2 class="text-2xl font-semibold text-gray-900 mb-4">📂 College E-Journal Collections (PDF)</h2>
+    {% if journal_pdfs %}
+      <div class="space-y-3">
+        {% for pdf in journal_pdfs %}
+        <div class="p-4 border rounded-lg hover:bg-gray-50 flex justify-between items-center">
+          <span class="font-semibold text-gray-800">{{ pdf.title }}</span>
+          <a href="{{ url_for('static', filename='journals/' + pdf.file) }}" target="_blank"
+             class="text-blue-700 font-medium hover:underline">📄 View PDF</a>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-gray-500">No journal PDFs uploaded yet.</p>
+    {% endif %}
+
+    <div class="mt-10 text-center">
+      <a href="{{ url_for('student_dashboard') }}" 
+         class="inline-block bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+         ← Back to Home
+      </a>
+    </div>
+  </div>
+
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</body>
+</html>

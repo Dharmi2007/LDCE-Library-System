@@ -26,34 +26,30 @@
 <body class="flex flex-col min-h-screen">
 
   <!-- Header -->
-  <header class="bg-gray-800 text-white sticky top-0 z-50 shadow-lg">
-    <div class="container mx-auto flex justify-between items-center px-6 py-4">
-      <div class="flex items-center space-x-3">
-        <i class="fas fa-book-reader text-3xl text-yellow-400"></i>
-        <h1 class="text-2xl font-bold">LDCE Central Library</h1>
-      </div>
+<header class="bg-gray-800 text-white sticky top-0 z-50 shadow-lg">
+  <div class="container mx-auto flex justify-between items-center px-6 py-4">
+    <div class="flex items-center space-x-3">
+      <!-- LDCE Logo -->
+      <img src="static/images/ldce_logo.png" alt="LDCE Logo" class="h-11 w-auto rounded-md">
 
-      <nav class="hidden md:flex space-x-6">
-        <a href="#home" class="nav-link">Home</a>
-        <a href="#new-arrivals" class="nav-link">New Arrivals</a>
-        <a href="#faqs" class="nav-link">FAQs</a>
-        <a href="#reserve" class="bg-yellow-400 text-gray-900 px-4 py-2 rounded-full font-bold hover:bg-yellow-500 transition">Reserve Book</a>
-        <a href="{{ url_for('admin_dashboard') }}" class="nav-link text-sm text-gray-300 hover:text-yellow-400">Staff Login</a>
-      </nav>
-
-      <button id="menu-button" class="md:hidden text-white">
-        <i class="fas fa-bars text-2xl"></i>
-      </button>
+      <!-- 📚 Icon and Title -->
+      <i class="fas fa-book-reader text-3xl text-yellow-400"></i>
+      <h1 class="text-2xl font-bold">LDCE Central Library</h1>
     </div>
 
-    <div id="mobile-menu" class="hidden md:hidden bg-gray-700">
-      <a href="#home" class="block py-2 px-4 hover:bg-gray-600">Home</a>
-      <a href="#new-arrivals" class="block py-2 px-4 hover:bg-gray-600">New Arrivals</a>
-      <a href="#faqs" class="block py-2 px-4 hover:bg-gray-600">FAQs</a>
-      <a href="#reserve" class="block py-2 px-4 hover:bg-gray-600 text-yellow-400 font-bold">Reserve Book</a>
-      <a href="{{ url_for('admin_dashboard') }}" class="block py-2 px-4 hover:bg-gray-600">Staff Login</a>
-    </div>
-  </header>
+    <!-- Navbar links -->
+    <nav class="space-x-6 text-lg">
+  <a href="/" class="hover:text-yellow-400 transition">Home</a>
+  <a href="/books" class="hover:text-yellow-400 transition">Books</a>
+  <a href="/account" class="hover:text-yellow-400 transition">Account</a>
+  <a href="/guidelines" class="hover:text-yellow-400 transition">Guidelines</a>
+  <a href="/ejournals" class="hover:text-yellow-400 transition">E-Journals</a>
+  <a href="/faqs" class="hover:text-yellow-400 transition">FAQs</a>
+  <a href="{{ url_for('admin_dashboard') }}" class="hover:text-yellow-400 transition">Staff Login</a>
+  <a href="/logout" class="hover:text-yellow-400 transition">Logout</a>
+</nav>
+  </div>
+</header>
 
   <!-- Hero Section -->
   <section id="home" class="container mx-auto text-center mt-10">

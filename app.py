@@ -15,6 +15,31 @@ def get_db_connection():
 
 
 # ---------- STUDENT DASHBOARD ----------
+@app.route('/guidelines')
+def guidelines():
+    return render_template('guidelines.html')
+@app.route('/faqs')
+def faqs():
+    faqs_list = [
+        {"question": "How can I issue a book?", "answer": "Visit the circulation desk with your student ID card."},
+        {"question": "What is the book return period?", "answer": "Books must be returned within 14 days."},
+        {"question": "Can I renew books online?", "answer": "Currently, renewals are available only at the library counter."},
+        {"question": "What happens if I lose a book?", "answer": "You must replace the same book or pay the replacement cost."},
+    ]
+    return render_template('faqs.html', faqs=faqs_list)
+@app.route('/ejournals')
+def ejournals():
+    # Example PDFs (add more as needed) – place files inside /static/journals/
+    journal_pdfs = [
+        {"title": "Computer Engineering Journal 2024", "file": "ce_journal_2024.pdf"},
+        {"title": "Mechanical Research Papers 2023", "file": "mech_research_2023.pdf"},
+    ]
+
+    return render_template('ejournals.html', journal_pdfs=journal_pdfs)
+
+
+
+
 @app.route('/', methods=['GET'])
 def student_dashboard():
     conn = get_db_connection()
