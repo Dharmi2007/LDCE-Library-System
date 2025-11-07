@@ -4,12 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>LDCE Central Library - Student Dashboard</title>
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background-color: #f8fafc;
+      background: #f8fafc;
       color: #1f2937;
     }
     .section-card {
@@ -17,130 +19,216 @@
       border-radius: 1rem;
       padding: 2rem;
       box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-      margin-top: 2rem;
+      margin-top: 2.5rem;
     }
-    .nav-link:hover { color: #facc15; }
   </style>
 </head>
 
 <body class="flex flex-col min-h-screen">
 
-  <!-- Header -->
-<header class="bg-gray-800 text-white sticky top-0 z-50 shadow-lg">
+<!-- ✅ NAVBAR -->
+<header class="bg-gray-800 text-white shadow-lg sticky top-0 z-50">
   <div class="container mx-auto flex justify-between items-center px-6 py-4">
-    <div class="flex items-center space-x-3">
-      <!-- LDCE Logo -->
-      <img src="static/images/ldce_logo.png" alt="LDCE Logo" class="h-11 w-auto rounded-md">
 
-      <!-- 📚 Icon and Title -->
-      <i class="fas fa-book-reader text-3xl text-yellow-400"></i>
+    <!-- Logo + Title -->
+    <div class="flex items-center space-x-3">
+      <img src="{{ url_for('static', filename='images/ldce_logo.png') }}"
+           alt="LDCE Logo" class="h-12 w-auto rounded-lg">
       <h1 class="text-2xl font-bold">LDCE Central Library</h1>
     </div>
 
-    <!-- Navbar links -->
-    <nav class="space-x-6 text-lg">
-  <a href="/" class="hover:text-yellow-400 transition">Home</a>
-  <a href="/books" class="hover:text-yellow-400 transition">Books</a>
-  <a href="/account" class="hover:text-yellow-400 transition">Account</a>
-  <a href="/guidelines" class="hover:text-yellow-400 transition">Guidelines</a>
-  <a href="/ejournals" class="hover:text-yellow-400 transition">E-Journals</a>
-  <a href="/faqs" class="hover:text-yellow-400 transition">FAQs</a>
-  <a href="{{ url_for('admin_dashboard') }}" class="hover:text-yellow-400 transition">Staff Login</a>
-  <a href="/logout" class="hover:text-yellow-400 transition">Logout</a>
-</nav>
+    <!-- Desktop Navigation -->
+    <nav class="hidden md:flex space-x-6 text-lg">
+      <a href="/" class="hover:text-yellow-400">Home</a>
+      <a href="/books" class="hover:text-yellow-400">Books</a>
+      <a href="/account" class="hover:text-yellow-400">Account</a>
+      <a href="/guidelines" class="hover:text-yellow-400">Guidelines</a>
+      <a href="/ejournals" class="hover:text-yellow-400">E-Journals</a>
+      <a href="/faqs" class="hover:text-yellow-400">FAQs</a>
+      <a href="{{ url_for('admin_dashboard') }}" class="hover:text-yellow-400">Staff Login</a>
+      <a href="/logout" class="hover:text-yellow-400 font-semibold">Logout</a>
+    </nav>
+
+    <!-- Mobile Menu Button -->
+    <button id="menu-btn" class="md:hidden">
+      <svg class="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round"
+              d="M4 6h16M4 12h16M4 18h16"/>
+      </svg>
+    </button>
+
+  </div>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden md:hidden bg-gray-700 px-6 pb-4 space-y-2 text-lg">
+    <a href="/" class="block py-2 border-b border-gray-600">Home</a>
+    <a href="/books" class="block py-2 border-b border-gray-600">Books</a>
+    <a href="/account" class="block py-2 border-b border-gray-600">Account</a>
+    <a href="/guidelines" class="block py-2 border-b border-gray-600">Guidelines</a>
+    <a href="/ejournals" class="block py-2 border-b border-gray-600">E-Journals</a>
+    <a href="/faqs" class="block py-2 border-b border-gray-600">FAQs</a>
+
+    <a href="{{ url_for('admin_dashboard') }}" class="block py-2 text-yellow-400 font-semibold">Staff Login</a>
+    <a href="/logout" class="block py-2 text-yellow-400 font-semibold">Logout</a>
   </div>
 </header>
 
-  <!-- Hero Section -->
-  <section id="home" class="container mx-auto text-center mt-10">
-    {% if announcement_message %}
-    <div class="bg-yellow-100 text-yellow-800 p-3 rounded-lg font-semibold mb-4">
-      📢 Announcement: {{ announcement_message }}
+
+<!-- ✅ HERO -->
+<section class="container mx-auto text-center mt-12">
+  {% if announcement_message %}
+  <div class="bg-yellow-100 text-yellow-800 p-3 rounded-lg font-semibold mb-6">
+    📢 Announcement: {{ announcement_message }}
+  </div>
+  {% endif %}
+
+  <h2 class="text-4xl font-bold text-gray-800 mb-3">Welcome to LDCE Central Library</h2>
+  <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+    Your digital window to books, journals, resources & academic updates.
+  </p>
+</section>
+
+
+<!-- ✅ SEARCH -->
+<section class="container mx-auto section-card">
+  <h3 class="text-2xl font-semibold mb-4">🔍 Search Books</h3>
+
+  <form action="{{ url_for('search') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
+    <input type="text" name="query"
+           placeholder="Search by title, author, or ISBN..."
+           class="border rounded-lg px-4 py-2 flex-1 shadow-sm focus:ring-yellow-400" required>
+
+    <button type="submit"
+            class="bg-yellow-400 hover:bg-yellow-500 px-6 py-2 rounded-lg font-bold text-gray-900 shadow-md transition">
+      Search
+    </button>
+  </form>
+</section>
+
+
+<!-- ✅ NEW ARRIVALS -->
+<section class="container mx-auto section-card">
+  <h3 class="text-2xl font-semibold mb-6">📚 New Arrivals</h3>
+
+  {% if new_arrivals %}
+  <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for book in new_arrivals %}
+    <div class="border rounded-xl p-5 shadow-sm hover:shadow-md bg-gray-50 transition">
+      <h4 class="font-bold text-lg text-gray-800">{{ book.title }}</h4>
+      <p class="text-gray-700 mt-1">👤 {{ book.author }}</p>
+      <p class="text-gray-500 text-sm">ISBN: {{ book.isbn }}</p>
+      <p class="text-gray-400 text-xs mt-2">📅 Arrived: {{ book.arrival_date }}</p>
     </div>
-    {% endif %}
-    <h2 class="text-4xl font-bold text-gray-800 mb-4">Welcome to LDCE Central Library</h2>
-    <p class="text-gray-600 max-w-2xl mx-auto">
-      Explore thousands of books, digital resources, and more. Stay informed about new arrivals, timings, and announcements.
-    </p>
-  </section>
+    {% endfor %}
+  </div>
+  {% else %}
+  <p class="text-gray-500">No new books available.</p>
+  {% endif %}
+</section>
+<!-- 📚 Combined Section: What’s New + My Library -->
+<section class="container mx-auto section-card mt-10">
+    <h2 class="text-3xl font-bold mb-6 text-gray-800">📚 What's New & My Library</h2>
 
-  <!-- Search -->
-  <section id="search" class="container mx-auto section-card">
-    <h3 class="text-2xl font-semibold mb-4">🔍 Search Books</h3>
-    <form action="{{ url_for('search') }}" method="GET" class="flex flex-col sm:flex-row gap-3">
-      <input type="text" name="query" placeholder="Search by title, author, or ISBN..."
-             class="border rounded px-4 py-2 flex-1 focus:ring focus:ring-yellow-400" required>
-      <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 px-6 py-2 rounded font-bold text-gray-900 transition">Search</button>
-    </form>
-  </section>
+    <div class="grid md:grid-cols-2 gap-8">
+        <!-- ✅ MY LIBRARY (Forms section) -->
+        <div>
+           
+            <div class="space-y-4">
 
-  <!-- New Arrivals -->
-  <section id="new-arrivals" class="container mx-auto section-card">
-    <h3 class="text-2xl font-semibold mb-4">📚 New Arrivals</h3>
-    {% if new_arrivals %}
-    <div class="grid md:grid-cols-3 gap-4">
-      {% for book in new_arrivals %}
-      <div class="border rounded-lg p-4 hover:shadow-md transition">
-        <h4 class="font-bold text-lg">{{ book.title }}</h4>
-        <p class="text-sm text-gray-600">👤 {{ book.author }}</p>
-        <p class="text-sm text-gray-500">ISBN: {{ book.isbn }}</p>
-        <p class="text-xs text-gray-400 mt-2">Arrived: {{ book.arrival_date }}</p>
+                <a href="{{ url_for('donation_form') }}"
+                  class="block bg-blue-400 hover:bg-blue-600 text-white px-4 py-3 rounded-lg shadow">
+                  📘 Book Donation Form
+                </a>
+
+                <a href="{{ url_for('lost_book_form') }}"
+                   class="block bg-red-400 hover:bg-red-600 text-white px-4 py-3 rounded-lg shadow">
+                   ❗ Lost Book Report
+                </a>
+
+                <a href="{{ url_for('suggestion_form') }}"
+                   class="block bg-green-400 hover:bg-green-600 text-white px-4 py-3 rounded-lg shadow">
+                   💡 Suggestion / Feedback Form
+                </a>
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+
+<!-- ✅ TIMINGS + FAQ SECTION -->
+<section class="container mx-auto section-card">
+  <div class="grid md:grid-cols-2 gap-12">
+
+    <!-- Timings -->
+    <div>
+      <h3 class="text-2xl font-semibold mb-4">🕒 Library Timings</h3>
+      <ul class="space-y-2 text-gray-700">
+        {% for day, time in timings.items() %}
+        <li><strong>{{ day }}:</strong> {{ time }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <!-- FAQs -->
+    <div>
+      <h3 class="text-2xl font-semibold mb-4">❓ FAQs</h3>
+
+      {% if faqs %}
+      <div class="space-y-4">
+        {% for faq in faqs %}
+        <div class="border-b pb-3">
+          <p class="font-semibold text-gray-800 text-lg">{{ faq.question }}</p>
+          <p class="text-gray-600 mt-1">{{ faq.answer }}</p>
+        </div>
+        {% endfor %}
       </div>
-      {% endfor %}
+      {% else %}
+      <p class="text-gray-500">No FAQs available.</p>
+      {% endif %}
     </div>
-    {% else %}
-    <p class="text-gray-500">No new books found.</p>
-    {% endif %}
-  </section>
 
-  <!-- Timings -->
-  <section id="timings" class="container mx-auto section-card">
-    <h3 class="text-2xl font-semibold mb-4">🕒 Library Timings</h3>
-    <ul class="text-gray-700 space-y-2">
-      {% for day, time in timings.items() %}
-      <li><strong>{{ day }}:</strong> {{ time }}</li>
-      {% endfor %}
-    </ul>
-  </section>
+  </div>
+</section>
 
-  <!-- FAQs -->
-  <section id="faqs" class="container mx-auto section-card">
-    <h3 class="text-2xl font-semibold mb-4">❓ Frequently Asked Questions</h3>
-    {% if faqs %}
-    <ul class="space-y-3">
-      {% for faq in faqs %}
-      <li class="border-b pb-2">
-        <strong>{{ faq.question }}</strong><br>
-        <span class="text-gray-600">{{ faq.answer }}</span>
-      </li>
-      {% endfor %}
-    </ul>
-    {% else %}
-    <p class="text-gray-500">No FAQs available at the moment.</p>
-    {% endif %}
-  </section>
 
-  <!-- Reserve Form -->
-  <section id="reserve" class="container mx-auto section-card mb-10">
-    <h3 class="text-2xl font-semibold mb-4">📖 Reserve a Book</h3>
-    <form method="POST" action="{{ url_for('reserve_book') }}" class="grid gap-3 md:grid-cols-2">
-      <input type="text" name="student_name" placeholder="Your Name" class="border rounded px-4 py-2" required>
-      <input type="text" name="student_id" placeholder="Student ID" class="border rounded px-4 py-2" required>
-      <input type="text" name="title" placeholder="Book Title" class="border rounded px-4 py-2 md:col-span-2" required>
-      <button type="submit" class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 rounded md:col-span-2 transition">Reserve Now</button>
-    </form>
-  </section>
+<!-- ✅ RESERVATION FORM -->
+<section class="container mx-auto section-card mb-12">
+  <h3 class="text-2xl font-semibold mb-6">📖 Reserve a Book</h3>
 
-  <!-- Footer -->
-  <footer class="bg-gray-800 text-gray-300 py-6 text-center mt-auto">
-    <p>© {{ current_year }} LDCE Central Library | Developed for Hackathon 🚀</p>
-  </footer>
+  <form method="POST" action="{{ url_for('reserve_book') }}"
+        class="grid gap-4 sm:grid-cols-2">
 
-  <script>
-    document.getElementById('menu-button').addEventListener('click', function() {
-      document.getElementById('mobile-menu').classList.toggle('hidden');
-    });
-  </script>
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <input type="text" name="student_name" placeholder="Your Name"
+           class="border rounded-lg px-4 py-2 shadow-sm" required>
+
+    <input type="text" name="student_id" placeholder="Student ID"
+           class="border rounded-lg px-4 py-2 shadow-sm" required>
+
+    <input type="text" name="title" placeholder="Book Title"
+           class="border rounded-lg px-4 py-2 shadow-sm sm:col-span-2" required>
+
+    <button type="submit"
+            class="bg-yellow-400 hover:bg-yellow-500 text-gray-900 font-bold py-2 rounded-lg sm:col-span-2 shadow-md">
+      Reserve Now
+    </button>
+  </form>
+</section>
+
+
+<!-- ✅ FOOTER -->
+<footer class="bg-gray-800 text-gray-300 py-6 text-center mt-auto">
+  <p>© {{ current_year }} LDCE Central Library | Developed for Hackathon 🚀</p>
+</footer>
+
+
+<!-- ✅ Script -->
+<script>
+  document.getElementById('menu-btn').addEventListener('click', () => {
+    document.getElementById('mobile-menu').classList.toggle('hidden');
+  });
+</script>
+
 </body>
 </html>

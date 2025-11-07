@@ -37,6 +37,7 @@ CREATE TABLE config (
     value TEXT NOT NULL -- NO COMMA HERE
 );
 
+
 -- 5. Essential Initial Data Insertion
 
 -- Insert Default FAQs
@@ -50,6 +51,21 @@ INSERT INTO config (key, value) VALUES
 ('regular_timing', '9:00 AM - 6:00 PM (Mon-Fri)'),
 ('special_timing', '9:00 AM - 1:00 PM (Sat)'),
 ('announcement', 'Welcome to the new LDCE Central Library digital portal! We are currently closed on Sunday.');
+
+-- 6. Table to store suggestions, book donations, and lost book reports
+DROP TABLE IF EXISTS suggestions;
+
+CREATE TABLE suggestions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT NOT NULL,
+    student_id TEXT NOT NULL,
+    email TEXT NOT NULL,
+    message TEXT,
+    type TEXT NOT NULL,        -- donation / lost_book / suggestion
+    book_name TEXT,            -- For donation / lost_book
+    author_name TEXT,          -- For donation
+    isbn TEXT                  -- For donation
+);
 
 -- Insert Example New Arrivals
 INSERT INTO new_arrivals (title, author, isbn, arrival_date) VALUES

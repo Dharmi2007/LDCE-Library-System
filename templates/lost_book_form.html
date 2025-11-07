@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lost Book Report</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+
+    <form method="POST" class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+        <h2 class="text-xl font-bold mb-4 text-red-600">❗ Lost Book Report</h2>
+
+        <!-- Student Name -->
+        <input type="text" name="name" placeholder="Student Name"
+               class="border p-2 w-full mb-3 rounded text-gray-700" required>
+
+        <!-- Student ID -->
+        <input type="text" name="student_id" placeholder="Student ID" required
+               class="border p-2 w-full mb-3 rounded text-gray-700">
+
+        <!-- Email ID -->
+        <input type="email" name="email" placeholder="Email ID" required
+               class="border p-2 w-full mb-3 rounded text-gray-700">
+
+        <!-- Book Name -->
+        <input type="text" name="book_name" placeholder="Book Name" required
+               class="border p-2 w-full mb-3 rounded text-gray-700">
+
+        <!-- Reservation Date -->
+        <div class="mb-3">
+            <label for="reservation_date" class="block text-gray-700 font-medium mb-1">
+                Reservation Date
+            </label>
+            <input type="date" id="reservation_date" name="reservation_date"
+                   class="border p-2 w-full rounded text-gray-700" required>
+            <p class="text-sm text-gray-400 mt-1">(Format: dd-mm-yyyy)</p>
+        </div>
+
+        <!-- Additional Details -->
+        <textarea name="message" placeholder="Additional Details (Optional)"
+                  class="border p-2 w-full mb-3 rounded text-gray-700"></textarea>
+
+        <!-- Submit Button -->
+        <button type="submit"
+                class="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded w-full">
+            Submit
+        </button>
+
+        <!-- Back Button -->
+        <a href="/" class="text-red-600 text-sm block mt-3">← Back</a>
+    </form>
+
+</body>
+</html>
