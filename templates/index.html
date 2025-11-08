@@ -21,35 +21,41 @@
       box-shadow: 0 2px 10px rgba(0,0,0,0.08);
       margin-top: 2.5rem;
     }
+
+    /* Clean smooth ticker */
+    @keyframes smoothScroll {
+      0% { transform: translateX(100%); }
+      100% { transform: translateX(-100%); }
+    }
+    .news-scroll {
+      animation: smoothScroll 18s linear infinite;
+      white-space: nowrap;
+    }
   </style>
 </head>
 
 <body class="flex flex-col min-h-screen">
 
-<!-- ✅ NAVBAR -->
+<!-- NAVBAR -->
 <header class="bg-gray-800 text-white shadow-lg sticky top-0 z-50">
   <div class="container mx-auto flex justify-between items-center px-6 py-4">
 
-    <!-- Logo + Title -->
     <div class="flex items-center space-x-3">
       <img src="{{ url_for('static', filename='images/ldce_logo.png') }}"
            alt="LDCE Logo" class="h-12 w-auto rounded-lg">
       <h1 class="text-2xl font-bold">LDCE Central Library</h1>
     </div>
 
-    <!-- Desktop Navigation -->
     <nav class="hidden md:flex space-x-6 text-lg">
       <a href="/" class="hover:text-yellow-400">Home</a>
       <a href="/books" class="hover:text-yellow-400">Books</a>
-      <a href="/account" class="hover:text-yellow-400">Account</a>
       <a href="/guidelines" class="hover:text-yellow-400">Guidelines</a>
       <a href="/ejournals" class="hover:text-yellow-400">E-Journals</a>
-      <a href="/faqs" class="hover:text-yellow-400">FAQs</a>
+      <a href="{{ url_for('staff') }}">Library Staff</a>
       <a href="{{ url_for('admin_dashboard') }}" class="hover:text-yellow-400">Staff Login</a>
       <a href="/logout" class="hover:text-yellow-400 font-semibold">Logout</a>
     </nav>
 
-    <!-- Mobile Menu Button -->
     <button id="menu-btn" class="md:hidden">
       <svg class="w-8 h-8 text-yellow-400" fill="none" stroke="currentColor" stroke-width="2">
         <path stroke-linecap="round" stroke-linejoin="round"
@@ -59,7 +65,6 @@
 
   </div>
 
-  <!-- Mobile Menu -->
   <div id="mobile-menu" class="hidden md:hidden bg-gray-700 px-6 pb-4 space-y-2 text-lg">
     <a href="/" class="block py-2 border-b border-gray-600">Home</a>
     <a href="/books" class="block py-2 border-b border-gray-600">Books</a>
@@ -74,13 +79,20 @@
 </header>
 
 
-<!-- ✅ HERO -->
-<section class="container mx-auto text-center mt-12">
-  {% if announcement_message %}
-  <div class="bg-yellow-100 text-yellow-800 p-3 rounded-lg font-semibold mb-6">
-    📢 Announcement: {{ announcement_message }}
+<!-- ✅ CLEAN NEWS TICKER -->
+{% if announcement_message %}
+<div class="w-full bg-yellow-100 text-yellow-800 py-3 overflow-hidden shadow-inner">
+  <div class="news-scroll text-lg font-semibold px-4">
+    {% for msg in announcement_message.split('|') %}
+      📢 {{ msg }} &nbsp;&nbsp;&nbsp; • &nbsp;&nbsp;&nbsp;
+    {% endfor %}
   </div>
-  {% endif %}
+</div>
+{% endif %}
+
+
+<!-- HERO -->
+<section class="container mx-auto text-center mt-12">
 
   <h2 class="text-4xl font-bold text-gray-800 mb-3">Welcome to LDCE Central Library</h2>
   <p class="text-gray-600 text-lg max-w-2xl mx-auto">
@@ -89,7 +101,7 @@
 </section>
 
 
-<!-- ✅ SEARCH -->
+<!-- SEARCH -->
 <section class="container mx-auto section-card">
   <h3 class="text-2xl font-semibold mb-4">🔍 Search Books</h3>
 
@@ -106,7 +118,7 @@
 </section>
 
 
-<!-- ✅ NEW ARRIVALS -->
+<!-- NEW ARRIVALS -->
 <section class="container mx-auto section-card">
   <h3 class="text-2xl font-semibold mb-6">📚 New Arrivals</h3>
 
@@ -125,43 +137,37 @@
   <p class="text-gray-500">No new books available.</p>
   {% endif %}
 </section>
-<!-- 📚 Combined Section: What’s New + My Library -->
+
+
+<!-- MY LIBRARY -->
 <section class="container mx-auto section-card mt-10">
-    <h2 class="text-3xl font-bold mb-6 text-gray-800">📚 What's New & My Library</h2>
+  <h2 class="text-3xl font-bold mb-6 text-gray-800">📁 My Library</h2>
 
-    <div class="grid md:grid-cols-2 gap-8">
-        <!-- ✅ MY LIBRARY (Forms section) -->
-        <div>
-           
-            <div class="space-y-4">
+  <div class="space-y-4">
 
-                <a href="{{ url_for('donation_form') }}"
-                  class="block bg-blue-400 hover:bg-blue-600 text-white px-4 py-3 rounded-lg shadow">
-                  📘 Book Donation Form
-                </a>
+    <a href="{{ url_for('donation_form') }}"
+       class="block bg-blue-400 hover:bg-blue-600 text-white px-4 py-3 rounded-lg shadow">
+       📘 Book Donation Form
+    </a>
 
-                <a href="{{ url_for('lost_book_form') }}"
-                   class="block bg-red-400 hover:bg-red-600 text-white px-4 py-3 rounded-lg shadow">
-                   ❗ Lost Book Report
-                </a>
+    <a href="{{ url_for('lost_book_form') }}"
+       class="block bg-red-400 hover:bg-red-600 text-white px-4 py-3 rounded-lg shadow">
+       ❗ Lost Book Report
+    </a>
 
-                <a href="{{ url_for('suggestion_form') }}"
-                   class="block bg-green-400 hover:bg-green-600 text-white px-4 py-3 rounded-lg shadow">
-                   💡 Suggestion / Feedback Form
-                </a>
-            </div>
-        </div>
+    <a href="{{ url_for('suggestion_form') }}"
+       class="block bg-green-400 hover:bg-green-600 text-white px-4 py-3 rounded-lg shadow">
+       💡 Suggestion / Feedback Form
+    </a>
 
-    </div>
+  </div>
 </section>
 
 
-
-<!-- ✅ TIMINGS + FAQ SECTION -->
+<!-- TIMINGS + FAQ -->
 <section class="container mx-auto section-card">
   <div class="grid md:grid-cols-2 gap-12">
 
-    <!-- Timings -->
     <div>
       <h3 class="text-2xl font-semibold mb-4">🕒 Library Timings</h3>
       <ul class="space-y-2 text-gray-700">
@@ -171,10 +177,8 @@
       </ul>
     </div>
 
-    <!-- FAQs -->
     <div>
       <h3 class="text-2xl font-semibold mb-4">❓ FAQs</h3>
-
       {% if faqs %}
       <div class="space-y-4">
         {% for faq in faqs %}
@@ -193,7 +197,7 @@
 </section>
 
 
-<!-- ✅ RESERVATION FORM -->
+<!-- RESERVE BOOK -->
 <section class="container mx-auto section-card mb-12">
   <h3 class="text-2xl font-semibold mb-6">📖 Reserve a Book</h3>
 
@@ -217,13 +221,11 @@
 </section>
 
 
-<!-- ✅ FOOTER -->
 <footer class="bg-gray-800 text-gray-300 py-6 text-center mt-auto">
   <p>© {{ current_year }} LDCE Central Library | Developed for Hackathon 🚀</p>
 </footer>
 
 
-<!-- ✅ Script -->
 <script>
   document.getElementById('menu-btn').addEventListener('click', () => {
     document.getElementById('mobile-menu').classList.toggle('hidden');

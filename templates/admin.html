@@ -51,7 +51,6 @@
     <a href="#reservations">📩 Reservations</a>
     <a href="#donations">📦 Donations</a>
     <a href="#lostbooks">📚 Lost Books</a>
-    <a href="#faqs">❓ FAQs</a>
   </nav>
 
   <!-- Main Content -->
@@ -213,15 +212,7 @@
   {% endif %}
 </section>
 
-    <!-- FAQ TAB -->
-    <section id="faqs">
-      <h2>❓ FAQs (View Only)</h2>
-      <ul>
-        {% for faq in faqs %}
-        <li><strong>{{ faq.question }}</strong><br>{{ faq.answer }}</li>
-        {% endfor %}
-      </ul>
-    </section>
+  
   </main>
 </body>
 </html>

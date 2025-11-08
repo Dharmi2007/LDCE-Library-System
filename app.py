@@ -34,6 +34,68 @@ def ejournals():
         {"title": "Mechanical Research Papers 2023", "file": "mech_research_2023.pdf"},
     ]
     return render_template('ejournals.html', journal_pdfs=journal_pdfs)
+# ---------- STAFF PAGE ----------
+@app.route('/staff')
+def staff():
+    staff_members = [
+        {
+            "name": "Dr. Neha Sharma",
+            "degree": "PhD in Library Science",
+            "role": "Head Librarian",
+            "email": "neha.sharma@ldce.ac.in",
+            "phone": "+91 98765 43210",
+            "work": "Library administration, policy decisions, acquisitions",
+            "photo": "staff/neha.jpg"
+        },
+        {
+            "name": "Mr. Rakesh Patel",
+            "degree": "MLIS",
+            "role": "Assistant Librarian",
+            "email": "rakesh.patel@ldce.ac.in",
+            "phone": "+91 91234 56789",
+            "work": "Book issuance, cataloging, student help desk",
+            "photo": "staff/rakesh.jpg"
+        },
+        {
+            "name": "Ms. Priya Desai",
+            "degree": "BLIS",
+            "role": "Technical Assistant",
+            "email": "priya.desai@ldce.ac.in",
+            "phone": "+91 98989 55667",
+            "work": "Digital library, databases, technical support",
+            "photo": "staff/priya.jpg"
+        },
+        {
+            "name": "Mr. Arvind Kumar",
+            "degree": "BLIS",
+            "role": "Library Assistant",
+            "email": "arvind.kumar@ldce.ac.in",
+            "phone": "+91 90909 33445",
+            "work": "Physical book management, reading hall support",
+            "photo": "staff/arvind.jpg"
+        },
+        {
+            "name": "Ms. Komal Shah",
+            "degree": "MLIS",
+            "role": "Acquisition Specialist",
+            "email": "komal.shah@ldce.ac.in",
+            "phone": "+91 99887 66432",
+            "work": "New arrivals, publisher coordination, procurement",
+            "photo": "staff/komal.jpg"
+        },
+        {
+            "name": "Mr. Jignesh Parmar",
+            "degree": "BLIS",
+            "role": "Circulation Manager",
+            "email": "jignesh.parmar@ldce.ac.in",
+            "phone": "+91 99112 44556",
+            "work": "Issue-return operations, overdue management",
+            "photo": "staff/jignesh.jpg"
+        }
+    ]
+    
+    return render_template('staff.html', staff=staff_members)
+
 
 # ---------- DONATION FORM ----------
 @app.route('/donation', methods=["GET", "POST"])
@@ -242,4 +304,4 @@ def admin_update_config():
 
 # ---------- MAIN ----------
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True) 
