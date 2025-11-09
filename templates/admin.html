@@ -6,24 +6,21 @@
   <title>Admin Dashboard - Library Portal</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}" />
   <style>
-    /* ---- Base Styling ---- */
     * { box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
     body { margin: 0; display: flex; background-color: #f7f9fc; color: #222; }
-    h1, h2, h3 { margin-bottom: 10px; color: #2c3e50; }
+    h1,h2,h3 { margin-bottom: 10px; color: #2c3e50; }
     a { text-decoration: none; color: #2c3e50; }
 
-    /* ---- Sidebar ---- */
     nav { width: 220px; background-color: #2c3e50; color: white; display: flex; flex-direction: column; align-items: flex-start; padding: 20px 10px; height: 100vh; position: fixed; }
     nav h1 { color: white; font-size: 20px; margin-bottom: 30px; text-align: center; }
     nav a { display: block; width: 100%; padding: 10px 15px; margin: 5px 0; border-radius: 8px; color: white; transition: 0.3s; }
     nav a:hover { background-color: #34495e; }
 
-    /* ---- Main Content ---- */
     main { margin-left: 240px; padding: 30px; width: calc(100% - 240px); }
-    section { background-color: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); padding: 20px 25px; margin-bottom: 30px; }
+    section { background-color: white; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); padding: 20px 25px; margin-bottom: 30px; }
     form { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
     input, textarea, button { font-size: 15px; padding: 10px; border: 1px solid #ccc; border-radius: 8px; outline: none; }
-    input:focus, textarea:focus { border-color: #3498db; box-shadow: 0 0 5px rgba(52, 152, 219, 0.3); }
+    input:focus, textarea:focus { border-color: #3498db; box-shadow: 0 0 5px rgba(52,152,219,0.3); }
     button { background-color: #3498db; color: white; cursor: pointer; border: none; padding: 10px 18px; transition: 0.3s; border-radius: 8px; }
     button:hover { background-color: #2980b9; }
 
@@ -32,9 +29,6 @@
     th { background-color: #3498db; color: white; }
     tr:nth-child(even) { background-color: #f2f6fa; }
 
-    ul { list-style-type: none; padding-left: 0; }
-    ul li { background-color: #f9fafb; border-left: 4px solid #3498db; margin-bottom: 10px; padding: 10px 15px; border-radius: 6px; }
-
     @media (max-width: 768px) {
       nav { position: static; width: 100%; height: auto; flex-direction: row; justify-content: space-around; }
       main { margin-left: 0; width: 100%; }
@@ -42,6 +36,7 @@
   </style>
 </head>
 <body>
+
   <!-- Sidebar Navigation -->
   <nav>
     <h1>📚 Library Admin</h1>
@@ -50,12 +45,14 @@
     <a href="#timings">🕓 Timings</a>
     <a href="#reservations">📩 Reservations</a>
     <a href="#donations">📦 Donations</a>
-    <a href="#lostbooks">📚 Lost Books</a>
+    <a href="#lostbooks">❗ Lost Books</a>
+    <a href="#suggestions">💡 Suggestions</a>
   </nav>
 
   <!-- Main Content -->
   <main>
-    <!-- BOOKS TAB -->
+
+    <!-- BOOKS -->
     <section id="books">
       <h2>📖 Add New Book</h2>
       <form method="POST" action="{{ url_for('admin_add_book') }}">
@@ -82,7 +79,7 @@
       </table>
     </section>
 
-    <!-- TIMINGS TAB -->
+    <!-- TIMINGS -->
     <section id="timings">
       <h2>🕓 Update Library Timings & Announcement</h2>
       <form method="POST" action="{{ url_for('admin_update_config') }}">
@@ -96,16 +93,13 @@
       </form>
     </section>
 
-    <!-- RESERVATIONS TAB -->
+    <!-- RESERVATIONS -->
     <section id="reservations">
       <h2>📩 Student Book Reservations</h2>
       {% if reservations %}
       <table>
         <tr>
-          <th>Book Title</th>
-          <th>Student Name</th>
-          <th>Student ID</th>
-          <th>Reservation Date</th>
+          <th>Book Title</th><th>Student Name</th><th>Student ID</th><th>Reservation Date</th>
         </tr>
         {% for r in reservations %}
         <tr>
@@ -121,98 +115,74 @@
       {% endif %}
     </section>
 
-    <!-- DONATIONS TAB -->
+    <!-- DONATIONS -->
     <section id="donations">
-  <h2>📦 Book Donations</h2>
-  {% if donations %}
-  <table>
-    <tr>
-      <th>Student Name</th>
-      <th>Student ID</th>
-      <th>Email</th>
-      <th>Book Name</th>
-      <th>Author</th>
-      <th>ISBN</th>
-      <th>Date</th>
-      <th>Message</th>
-    </tr>
-    {% for d in donations %}
-    <tr>
-      <td>{{ d.name }}</td>
-      <td>{{ d.student_id }}</td>
-      <td>{{ d.email }}</td>
-      <td>{{ d.book_name }}</td>
-      <td>{{ d.author_name }}</td>
-      <td>{{ d.isbn }}</td>
-      <td>N/A</td>
-      <td>{{ d.message }}</td>
-    </tr>
-    {% endfor %}
-  </table>
-  {% else %}
-  <p>No donation submissions yet.</p>
-  {% endif %}
-</section>
+      <h2>📦 Book Donations</h2>
+      {% if donations %}
+      <table>
+        <tr>
+          <th>Name</th><th>ID</th><th>Email</th><th>Book</th><th>Author</th><th>ISBN</th><th>Date</th><th>Message</th>
+        </tr>
+        {% for d in donations %}
+        <tr>
+          <td>{{ d.name }}</td>
+          <td>{{ d.student_id }}</td>
+          <td>{{ d.email }}</td>
+          <td>{{ d.book_name }}</td>
+          <td>{{ d.author_name }}</td>
+          <td>{{ d.isbn }}</td>
+          <td>N/A</td>
+          <td>{{ d.message }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% else %}
+      <p>No donations yet.</p>
+      {% endif %}
+    </section>
 
-
-    <!-- LOST BOOK TAB -->
+    <!-- LOST BOOKS -->
     <section id="lostbooks">
-  <h2 class="text-xl font-bold text-red-600 mt-6 mb-2">❗ Lost Book Reports</h2>
-  {% if lost_books %}
-  <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
-      <thead class="bg-gray-100">
-          <tr>
-              <th class="py-2 px-4 border">Name</th>
-              <th class="py-2 px-4 border">Student ID</th>
-              <th class="py-2 px-4 border">Email</th>
-              <th class="py-2 px-4 border">Book Name</th>
-              <th class="py-2 px-4 border">Reservation Date</th>
-              <th class="py-2 px-4 border">Message</th>
-          </tr>
-      </thead>
-      <tbody>
-          {% for report in lost_books %}
-          <tr>
-              <td class="py-2 px-4 border">{{ report.name }}</td>
-              <td class="py-2 px-4 border">{{ report.student_id }}</td>
-              <td class="py-2 px-4 border">{{ report.email }}</td>
-              <td class="py-2 px-4 border">{{ report.book_name }}</td>
-              <td class="py-2 px-4 border">N/A</td>
-              <td class="py-2 px-4 border">{{ report.message }}</td>
-          </tr>
-          {% endfor %}
-      </tbody>
-  </table>
-  {% else %}
-  <p class="text-gray-500">No lost book reports yet.</p>
-  {% endif %}
-</section>
+      <h2>❗ Lost Book Reports</h2>
+      {% if lost_books %}
+      <table>
+        <tr><th>Name</th><th>ID</th><th>Email</th><th>Book</th><th>Date</th><th>Message</th></tr>
+        {% for report in lost_books %}
+        <tr>
+          <td>{{ report.name }}</td>
+          <td>{{ report.student_id }}</td>
+          <td>{{ report.email }}</td>
+          <td>{{ report.book_name }}</td>
+          <td>N/A</td>
+          <td>{{ report.message }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% else %}
+      <p>No lost book reports.</p>
+      {% endif %}
+    </section>
 
-<section id="suggestions">
-  <h2>💡 Student Suggestions</h2>
-  {% if suggestions %}
-  <table>
-    <tr>
-      <th>Student Name</th>
-      <th>Student ID</th>
-      <th>Email</th>
-      <th>Message</th>
-    </tr>
-    {% for s in suggestions %}
-    <tr>
-      <td>{{ s.name }}</td>
-      <td>{{ s.student_id }}</td>
-      <td>{{ s.email }}</td>
-      <td>{{ s.message }}</td>
-    </tr>
-    {% endfor %}
-  </table>
-  {% else %}
-  <p>No suggestions submitted yet.</p>
-  {% endif %}
-</section>
+    <!-- SUGGESTIONS -->
+    <section id="suggestions">
+      <h2>💡 Student Suggestions</h2>
+      {% if suggestions %}
+      <table>
+        <tr><th>Name</th><th>ID</th><th>Email</th><th>Message</th></tr>
+        {% for s in suggestions %}
+        <tr>
+          <td>{{ s.name }}</td>
+          <td>{{ s.student_id }}</td>
+          <td>{{ s.email }}</td>
+          <td>{{ s.message }}</td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% else %}
+      <p>No suggestions.</p>
+      {% endif %}
+    </section>
 
-  
   </main>
 </body>
 </html>

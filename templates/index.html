@@ -52,8 +52,8 @@
       <a href="/guidelines" class="hover:text-yellow-400">Guidelines</a>
       <a href="/ejournals" class="hover:text-yellow-400">E-Journals</a>
       <a href="{{ url_for('staff') }}">Library Staff</a>
-      <a href="{{ url_for('admin_dashboard') }}" class="hover:text-yellow-400">Staff Login</a>
-      <a href="/logout" class="hover:text-yellow-400 font-semibold">Logout</a>
+      <a href="{{ url_for('staff_login') }}" class="hover:text-yellow-400">Staff Login</a>
+      <a href="{{ url_for('logout') }}" class="hover:text-yellow-400 font-semibold">Logout</a>
     </nav>
 
     <button id="menu-btn" class="md:hidden">
@@ -68,13 +68,12 @@
   <div id="mobile-menu" class="hidden md:hidden bg-gray-700 px-6 pb-4 space-y-2 text-lg">
     <a href="/" class="block py-2 border-b border-gray-600">Home</a>
     <a href="/books" class="block py-2 border-b border-gray-600">Books</a>
-    <a href="/account" class="block py-2 border-b border-gray-600">Account</a>
     <a href="/guidelines" class="block py-2 border-b border-gray-600">Guidelines</a>
     <a href="/ejournals" class="block py-2 border-b border-gray-600">E-Journals</a>
     <a href="/faqs" class="block py-2 border-b border-gray-600">FAQs</a>
-
-    <a href="{{ url_for('admin_dashboard') }}" class="block py-2 text-yellow-400 font-semibold">Staff Login</a>
-    <a href="/logout" class="block py-2 text-yellow-400 font-semibold">Logout</a>
+    <a href="{{ url_for('staff') }}" class="block py-2 text-yellow-400 font-semibold">Library Staff</a>
+    <a href="{{ url_for('staff_login') }}" class="block py-2 text-yellow-400 font-semibold">Staff Login</a>
+    <a href="{{ url_for('logout') }}" class="block py-2 text-yellow-400 font-semibold">Logout</a>
   </div>
 </header>
 

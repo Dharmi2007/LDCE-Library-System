@@ -42,12 +42,6 @@
             font-size: 20px;
             color: #333;
         }
-
-        .staff-card p {
-            margin: 6px 0;
-            font-size: 14px;
-            color: #555;
-        }
     </style>
 </head>
 <body>
@@ -57,13 +51,13 @@
 <div class="staff-grid">
     {% for s in staff %}
     <div class="staff-card">
-        <img src="{{ url_for('static', filename=s.photo) }}" alt="Staff Photo">
+        <img src="{{ url_for('static', filename=s.photo) }}" alt="{{ s.name }}">
         <h2>{{ s.name }}</h2>
-        <p><strong>Role:</strong> {{ s.role }}</p>
-        <p><strong>Degree:</strong> {{ s.degree }}</p>
-        <p><strong>Email:</strong> {{ s.email }}</p>
-        <p><strong>Phone:</strong> {{ s.phone }}</p>
-        <p><strong>Responsibilities:</strong> {{ s.work }}</p>
+        <p>{{ s.degree }}</p>
+        <p>{{ s.role }}</p>
+        <p>{{ s.email }}</p>
+        <p>{{ s.phone }}</p>
+        <p>{{ s.work }}</p>
     </div>
     {% endfor %}
 </div>

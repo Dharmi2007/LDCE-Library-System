@@ -1,16 +1,47 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 import sqlite3
 from datetime import datetime
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_hackathon_secret_key_12345'
+app.config['SECRET_KEY'] = 'your_secret_key_12345'
 DATABASE = 'database.db'
 
-# ---------- DATABASE CONNECTION ----------
+# -------------------- DATABASE CONNECTION --------------------
 def get_db_connection():
     conn = sqlite3.connect(DATABASE)
     conn.row_factory = sqlite3.Row
     return conn
+
+# -------------------- STAFF LOGIN --------------------
+@app.route('/staff_login', methods=['GET', 'POST'])
+def staff_login():
+    if request.method == 'POST':
+        username = request.form.get('username')
+        password = request.form.get('password')
+
+        conn = get_db_connection()
+        staff = conn.execute(
+            "SELECT * FROM staff WHERE username = ? AND password = ?",
+            (username, password)
+        ).fetchone()
+        conn.close()
+
+        if staff:
+            session['staff_logged_in'] = True
+            flash("✅ Login successful!", "success")
+            return redirect(url_for('admin_dashboard'))
+        else:
+            flash("❌ Invalid username or password!", "error")
+            return redirect(url_for('staff_login'))
+
+    return render_template('staff_login.html')
+
+
+@app.route('/logout')
+def logout():
+    session.pop('staff_logged_in', None)
+    flash("👋 Logged out successfully!", "info")
+    return redirect(url_for('staff_login'))
 
 # ---------- STUDENT DASHBOARD ----------
 @app.route('/guidelines')
@@ -303,5 +334,6 @@ def admin_update_config():
     return redirect(url_for('admin_dashboard') + '#timings')
 
 # ---------- MAIN ----------
+# -------------------- RUN APP --------------------
 if __name__ == '__main__':
-    app.run(debug=True) 
+    app.run(debug=True)
