@@ -56,11 +56,16 @@ VALUES ('staffadmin', 'lib@123', 'Library Admin', 'default_staff.png');
 -- 6. Table for Suggestions, Donations, and Lost Books
 CREATE TABLE suggestions (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    type TEXT NOT NULL,       -- suggestion / donation / lost_book
+    type TEXT NOT NULL,
     name TEXT NOT NULL,
     student_id TEXT,
-    suggestion TEXT           -- For message, donation details, or lost book reason
+    email TEXT,
+    book_name TEXT,
+    author_name TEXT,
+    isbn TEXT,
+    message TEXT
 );
+
 
 -- 7. Insert Default FAQs
 INSERT INTO faqs (question, answer) VALUES 
